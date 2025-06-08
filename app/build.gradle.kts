@@ -1,3 +1,12 @@
+// Impor dotenv
+import io.github.cdimascio.dotenv.dotenv
+
+// Baca .env file
+val dotenv = dotenv {
+    directory = rootProject.projectDir.absolutePath
+    ignoreIfMissing = true
+}
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -21,12 +30,14 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "API_URL", "\"${dotenv["API_URL_DEBUG"] ?: "https://api-dev.example.com/v1/"}\"")
+        }
         release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            buildConfigField("String", "API_URL", "\"${dotenv["API_URL_RELEASE"] ?: "https://api.example.com/v1/"}\"")
+            // Konfigurasi release lainnya
+            isMinifyEnabled = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
     compileOptions {
