@@ -1,3 +1,5 @@
+package com.example.storyapp.di
+
 import com.example.storyapp.data.remote.ApiService
 import dagger.Module
 import dagger.Provides
